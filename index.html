@@ -1,105 +1,13 @@
 <!DOCTYPE html>
-<html>
-<!-- https://segmentfault.com/a/1190000009448892  断点续传 -->
-<!-- https://www.jianshu.com/p/42f2c3d4f50f  视频转m3u8 -->
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>capture screen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="shortcut icon" href="/public/favicon.ico">
+    <title>React SSR</title>
+    <!--react-ssr-head-->
 </head>
-
 <body>
-    <input type="file" name="" id="files">
-    <video id="video" style="display: none;" controls="controls">
-        <source src="./11.mp4">
-    </video>
-    <div id="output"></div>
-    <script type="text/javascript">
-        var filesDom = document.getElementById('files');
-        var video = document.getElementById("video");
-        var time = 0;
-        filesDom.onchange = function (event) {
-            
-            
-            let file = filesDom.files[0];
-            console.log(file,"kkkk")
-            // return ;
-            var reader = new FileReader();
-            reader.onload = function (e) {
-
-
-                var data = e.target.result;
-                console.log(new Blob([data]),"kk")
-                return; // 'data:image/jpeg;base64,/9j/4AAQSk...(base64编码)...'            
-                video.currentTime = 0;
-                // preview.style.backgroundImage = 'url(' + data + ')';
-                video.src = data;
-                time = 0;
-                // init()
-                video.onloadedmetadata = function () {
-                    const url = video.src;
-                    const duration = video.duration;
-                    console.log(video,"--",duration);
-                    
-                    init(duration)
-                    // video.src = '';//避免下一句revoke后报错
-                    // window.URL.revokeObjectURL(url);
-                    // callback(duration);
-                };
-
-            };
-            // 以DataURL的形式读取文件:
-            reader.readAsArrayBuffer(file);
-
-        }
-
-        function init(duration) {
-
-            var output;
-            var scale = 0.3;
-          
-
-
-            var initialize = function () {
-                output = document.getElementById("output");
-
-                // var lo = video.addEventListener('loadeddata', durationchange)
-                video.currentTime = time;
-                video.addEventListener('timeupdate', function () {
-                    console.log(time,"kkkk")
-
-                    captureImage()
-                    time += 1
-                    if (time > duration) {
-                        return;
-                    }
-                    video.currentTime = time;
-                })
-
-                // video.addEventListener('click', captureImage);
-
-            };
-           
-            var captureImage = function () {
-                var canvas = document.createElement("canvas");
-
-
-                canvas.width = video.videoWidth * scale;
-                canvas.height = video.videoHeight * scale;
-                canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-
-                var img = document.createElement("img");
-                let base64 =canvas.toDataURL("image/png")
-                if(base64.indexOf('image/png')==-1){
-                    return ;
-                }
-                img.src = canvas.toDataURL("image/png");
-                img.width = '100';
-                output.appendChild(img);
-            };
-
-            initialize();
-        };
-    </script>
+    <!--react-ssr-outlet-->
 </body>
-
 </html>
